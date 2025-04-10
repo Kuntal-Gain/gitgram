@@ -1,16 +1,37 @@
-# gitgram
+# GitGram
 
-A new Flutter project.
+A modern, Instagram-like social media application built with Flutter.
+
+## Features
+
+- User authentication with Github
+- Profile management
+- Photo posting and sharing
+- Real-time notifications
+- Modern and responsive UI
+- Dark/Light theme support
+
+## Tech Stack
+
+- Flutter/Dart for cross-platform development
+- Firebase for backend services
+  - Authentication
+  - Firestore for data storage
+  - Storage for media files
+  - Cloud Functions
+- Provider for state management
+- Cached Network Image for efficient image loading
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### Prerequisites
 
-A few resources to get you started if this is your first Flutter project:
+- Flutter SDK (latest stable version)
+- Android Studio or VS Code with Flutter/Dart plugins
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Installation
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Clone the repository:
+```bash
+git clone [https://github.com/Kuntal-Gain/gitgram.git](https://github.com/Kuntal-Gain/gitgram.git)
+cd gitgram
