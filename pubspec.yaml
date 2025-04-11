@@ -20,6 +20,8 @@ dependencies:
   flutter_dotenv: ^5.2.1
   equatable: ^2.0.7
   google_fonts: ^6.2.1
+  github_oauth: ^0.0.2
+  shared_preferences: ^2.5.3
 
 
 # system dependencies
@@ -35,6 +37,7 @@ flutter:
 
   assets:
     - assets/
+    - .env
 
 
   # fonts:
