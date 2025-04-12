@@ -24,6 +24,8 @@ class RemoteDatasourceImpl implements RemoteDatasource {
         await prefs.setString(_tokenKey, result.token!);
       }
 
+      print("token saved");
+
       return result;
     } catch (e) {
       rethrow;

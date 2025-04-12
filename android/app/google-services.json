@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "571533633833",
+    "project_id": "gitgram-xd",
+    "storage_bucket": "gitgram-xd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:571533633833:android:fa68f20e39e363e5d26f38",
+        "android_client_info": {
+          "package_name": "com.example.gitgram"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJdxg2IS6iWh9Zyh9XzGvBLE54L6zjAXE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
