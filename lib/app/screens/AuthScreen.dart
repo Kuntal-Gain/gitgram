@@ -18,6 +18,12 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   @override
+  void initState() {
+    BlocProvider.of<AuthCubit>(context).isSignin();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
 

@@ -20,6 +20,8 @@ Future<void> init() async {
   sl.registerFactory(
     () => AuthCubit(
       signInWithGitHubUseCase: sl.call(),
+      isSignInUseCase: sl.call(),
+      signOutUseCase: sl.call(),
     ),
   );
 
