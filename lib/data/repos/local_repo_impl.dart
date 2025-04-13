@@ -3,6 +3,8 @@ import 'package:gitgram/data/data_sources/remote_datasource.dart';
 import 'package:gitgram/domain/repos/local_repository.dart';
 import 'package:github_oauth/github_oauth.dart';
 
+import '../../domain/entities/user_entity.dart';
+
 class LocalRepoImpl implements LocalRepository {
   final RemoteDatasource remoteDatasource;
 
@@ -17,4 +19,8 @@ class LocalRepoImpl implements LocalRepository {
 
   @override
   Future<void> signOut() => remoteDatasource.signOut();
+
+  @override
+  Future<UserEntity> getCurrentUser(String token) =>
+      remoteDatasource.getCurrentUser(token);
 }

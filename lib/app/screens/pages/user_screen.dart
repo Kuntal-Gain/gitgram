@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:gitgram/domain/entities/user_entity.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../widgets/profile_widgets.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({super.key});
+  final UserEntity user;
+  const UserProfileScreen({super.key, required this.user});
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -27,7 +29,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(100),
                   child: Image.network(
-                    'https://avatars.githubusercontent.com/u/166943482?v=4',
+                    widget.user.avatarUrl,
                     width: mq.width * 0.3,
                   ),
                 ),
@@ -38,7 +40,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('  @Kuntal-Gain',
+                      Text('  @${widget.user.login}',
                           style: GoogleFonts.merienda(
                             textStyle: TextStyle(
                               fontSize: mq.width * 0.05,
@@ -47,9 +49,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             ),
                           )),
                       profileCard(
-                        followers: 100,
-                        following: 100,
-                        repos: 100,
+                        followers: widget.user.followers,
+                        following: widget.user.following,
+                        repos: widget.user.publicRepos,
                       ),
                     ],
                   ),
@@ -59,7 +61,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "Flutter Developer | Flutter | Firebase",
+                widget.user.bio!,
                 style: TextStyle(
                   fontSize: 20,
                 ),

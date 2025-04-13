@@ -1,6 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gitgram/app/cubits/auth/auth_cubit.dart';
+import 'package:gitgram/app/cubits/user/user_cubit.dart';
 import 'package:gitgram/data/data_sources/remote_datasource_impl.dart';
 import 'package:gitgram/data/repos/local_repo_impl.dart';
 import 'package:gitgram/domain/repos/local_repository.dart';
@@ -10,6 +11,7 @@ import 'package:github_oauth/github_oauth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/data_sources/remote_datasource.dart';
+import 'domain/usecases/get_curr_user_usecase.dart';
 import 'domain/usecases/signout_usecase.dart';
 
 final sl = GetIt.instance;
@@ -25,11 +27,18 @@ Future<void> init() async {
     ),
   );
 
+  sl.registerFactory(
+    () => UserCubit(
+      getCurrentUserUsecase: sl.call(),
+    ),
+  );
+
   // usecases
 
   sl.registerLazySingleton(() => IsSignInUseCase(sl.call()));
   sl.registerLazySingleton(() => SignInWithGitHubUseCase(sl.call()));
   sl.registerLazySingleton(() => SignOutUseCase(sl.call()));
+  sl.registerLazySingleton(() => GetCurrentUserUsecase(sl.call()));
 
   // repositories
 

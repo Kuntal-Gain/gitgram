@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gitgram/app/cubits/user/user_cubit.dart';
 import 'package:gitgram/app/screens/AuthScreen.dart';
 import 'package:gitgram/app/screens/pages/feed_screen.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
-
+import 'package:gitgram/dependency_injection.dart' as di;
 import '../cubits/auth/auth_cubit.dart';
 import 'pages/explore_screen.dart';
 import 'pages/search_screen.dart';
@@ -22,12 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentIdx = 0;
   @override
   void initState() {
-    _screens = [
-      const FeedScreen(),
-      const SearchScreen(),
-      const ExploreScreen(),
-      const UserProfileScreen(),
-    ];
+    BlocProvider.of<UserCubit>(context).getUser(token: widget.token);
+
     super.initState();
   }
 
@@ -35,7 +32,29 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: _screens[currentIdx],
+      body: BlocBuilder<UserCubit, UserState>(
+        builder: (context, state) {
+          print(state);
+          if (state is UserLoading) {
+            return CircularProgressIndicator(
+              color: const Color.fromARGB(255, 66, 255, 73),
+            );
+          }
+          if (state is UserLoaded) {
+            final user = state.user;
+
+            _screens = [
+              const FeedScreen(),
+              const SearchScreen(),
+              const ExploreScreen(),
+              UserProfileScreen(user: user),
+            ];
+
+            return _screens[currentIdx];
+          }
+          return const SizedBox.shrink();
+        },
+      ),
       bottomNavigationBar: WaterDropNavBar(
         waterDropColor: Colors.white,
         backgroundColor: Colors.black,
