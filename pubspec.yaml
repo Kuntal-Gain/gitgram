@@ -23,6 +23,7 @@ dependencies:
   github_oauth: ^0.0.2
   shared_preferences: ^2.5.3
   firebase_core: ^3.13.0
+  water_drop_nav_bar: ^2.2.2
 
 
 # system dependencies

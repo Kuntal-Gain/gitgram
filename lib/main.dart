@@ -37,8 +37,9 @@ class MyApp extends StatelessWidget {
           create: (context) => di.sl<AuthCubit>(),
         ),
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: ThemeData.dark(),
         home: SplashScreen(),
       ),
     );
