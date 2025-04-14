@@ -5,6 +5,7 @@ import 'package:gitgram/app/screens/AuthScreen.dart';
 import 'package:gitgram/app/screens/pages/feed_screen.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 import 'package:gitgram/dependency_injection.dart' as di;
+import '../../utils/custom/custom_snackbar.dart';
 import '../cubits/auth/auth_cubit.dart';
 import 'pages/explore_screen.dart';
 import 'pages/search_screen.dart';
@@ -21,6 +22,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<Widget> _screens = [];
   int currentIdx = 0;
+  bool _hasShownSuccessBar = false;
+
   @override
   void initState() {
     BlocProvider.of<UserCubit>(context).getUser(token: widget.token);
@@ -36,13 +39,18 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, state) {
           print(state);
           if (state is UserLoading) {
-            return CircularProgressIndicator(
-              color: const Color.fromARGB(255, 66, 255, 73),
+            return Center(
+              child: CircularProgressIndicator(
+                color: const Color.fromARGB(255, 66, 255, 73),
+              ),
             );
           }
           if (state is UserLoaded) {
             final user = state.user;
-
+            if (!_hasShownSuccessBar) {
+              successBar(context, 'Successfully login as ${user.login}');
+              _hasShownSuccessBar = true;
+            }
             _screens = [
               const FeedScreen(),
               const SearchScreen(),
