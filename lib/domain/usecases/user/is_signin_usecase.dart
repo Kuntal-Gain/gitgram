@@ -1,4 +1,4 @@
-import '../repos/local_repository.dart';
+import '../../repos/local_repository.dart';
 
 class IsSignInUseCase {
   final LocalRepository localRepository;

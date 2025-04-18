@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../domain/entities/user_entity.dart';
-import '../../../domain/usecases/get_curr_user_usecase.dart';
+import '../../../domain/usecases/user/get_curr_user_usecase.dart';
 
 part 'user_state.dart';
 

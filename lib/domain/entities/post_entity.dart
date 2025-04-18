@@ -6,7 +6,7 @@ class PostEntity extends Equatable {
   final String name;
   final String fullName;
   final bool private;
-  final Owner owner;
+  final OwnerEntity owner;
   final String htmlUrl;
   final String description;
   final bool fork;
@@ -79,13 +79,13 @@ class PostEntity extends Equatable {
       ];
 }
 
-class Owner extends Equatable {
+class OwnerEntity extends Equatable {
   final String login;
   final int id;
   final String avatarUrl;
   final String htmlUrl;
 
-  Owner({
+  OwnerEntity({
     required this.login,
     required this.id,
     required this.avatarUrl,

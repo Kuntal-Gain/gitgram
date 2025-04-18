@@ -9,6 +9,7 @@ import 'package:gitgram/app/screens/splash_screen.dart';
 import 'package:gitgram/app/cubits/auth/auth_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'app/cubits/post/post_cubit.dart';
 import 'dependency_injection.dart' as di;
 import 'firebase_options.dart';
 
@@ -25,26 +26,6 @@ void main() async {
   runApp(const MyApp());
 }
 
-// Future<Map<String, dynamic>?> fetchGitHubUserInfo(String token) async {
-//   final url = Uri.parse('https://api.github.com/user');
-
-//   final response = await http.get(
-//     url,
-//     headers: {
-//       'Authorization': 'Bearer $token',
-//       'Accept': 'application/vnd.github+json',
-//     },
-//   );
-
-//   if (response.statusCode == 200) {
-//     return jsonDecode(response.body);
-//   } else {
-//     print(
-//         'Failed to fetch user info: ${response.statusCode} - ${response.body}');
-//     return null;
-//   }
-// }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -58,6 +39,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<UserCubit>(
           create: (context) => di.sl<UserCubit>(),
+        ),
+        BlocProvider<PostCubit>(
+          create: (context) => di.sl<PostCubit>(),
         ),
       ],
       child: MaterialApp(

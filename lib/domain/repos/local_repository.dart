@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gitgram/domain/entities/post_entity.dart';
 import 'package:gitgram/domain/entities/user_entity.dart';
 import 'package:github_oauth/github_oauth.dart';
 
@@ -13,4 +14,10 @@ abstract class LocalRepository {
   Future<void> signOut();
 
   Future<UserEntity> getCurrentUser(String token);
+
+  // repos
+
+  Future<List<PostEntity>> getRepositories(String username);
+
+  Future<PostEntity> getSingleRepository(String username, String repoId);
 }

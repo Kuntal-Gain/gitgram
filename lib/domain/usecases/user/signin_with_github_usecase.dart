@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:github_oauth/github_oauth.dart';
 
-import '../repos/local_repository.dart';
+import '../../repos/local_repository.dart';
 
 class SignInWithGitHubUseCase {
   final LocalRepository localRepository;

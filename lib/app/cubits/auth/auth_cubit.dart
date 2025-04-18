@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gitgram/domain/usecases/is_signin_usecase.dart';
-import 'package:gitgram/domain/usecases/signin_with_github_usecase.dart';
-import 'package:gitgram/domain/usecases/signout_usecase.dart';
+import 'package:gitgram/domain/usecases/user/is_signin_usecase.dart';
+import 'package:gitgram/domain/usecases/user/signin_with_github_usecase.dart';
+import 'package:gitgram/domain/usecases/user/signout_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'auth_state.dart';

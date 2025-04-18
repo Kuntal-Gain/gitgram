@@ -3,10 +3,13 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:gitgram/data/data_sources/remote_datasource.dart';
 import 'package:gitgram/data/models/user_model.dart';
+import 'package:gitgram/domain/entities/post_entity.dart';
 import 'package:gitgram/domain/entities/user_entity.dart';
 import 'package:github_oauth/github_oauth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import '../models/post_model.dart';
 
 class RemoteDatasourceImpl implements RemoteDatasource {
   final GitHubSignIn gitHubSignIn;
@@ -65,6 +68,43 @@ class RemoteDatasourceImpl implements RemoteDatasource {
       return UserModel.fromJson(data);
     } else {
       throw Exception('Failed to fetch user info');
+    }
+  }
+
+  @override
+  Future<List<PostEntity>> getRepositories(String username) async {
+    final token = prefs.getString(_tokenKey);
+    final url = Uri.parse("https://api.github.com/users/$username/repos");
+
+    final res = await http.get(url, headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/vnd.github+json',
+    });
+
+    if (res.statusCode == 200) {
+      final data = jsonDecode(res.body);
+      print(data);
+      return (data as List).map((e) => PostModel.fromJson(e)).toList();
+    } else {
+      throw Exception('Failed to fetch repositories');
+    }
+  }
+
+  @override
+  Future<PostEntity> getSingleRepository(String username, String repoId) async {
+    final token = prefs.getString(_tokenKey);
+    final url = Uri.parse("https://api.github.com/repos/$username/$repoId");
+
+    final res = await http.get(url, headers: {
+      'Authorization': 'Bearer $token',
+      'Accept': 'application/vnd.github+json',
+    });
+
+    if (res.statusCode == 200) {
+      final data = jsonDecode(res.body);
+      return PostModel.fromJson(data);
+    } else {
+      throw Exception('Failed to fetch repository');
     }
   }
 }
