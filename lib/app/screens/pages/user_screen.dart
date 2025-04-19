@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gitgram/app/cubits/post/post_cubit.dart';
 import 'package:gitgram/app/widgets/post_widget.dart';
 import 'package:gitgram/domain/entities/user_entity.dart';
-import 'package:gitgram/utils/custom/custom_snackbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../utils/custom/custom_snackbar.dart';
 import '../../widgets/profile_widgets.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -34,19 +34,27 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           if (state is PostLoading) {
             return const Center(
               child: CircularProgressIndicator(
-                color: Colors.white,
+                color: Color.fromARGB(255, 66, 255, 73),
               ),
             );
           }
 
           if (state is PostError) {
-            failureBar(context, state.message);
+            // Handle null message case
+            final errorMessage = state.message ?? 'Something went wrong!';
+            failureBar(context, errorMessage);
 
             return Center(
-              child: Text("Something Went Wrong!"),
+              child: Text(
+                errorMessage,
+                style: const TextStyle(color: Colors.white),
+              ),
             );
           }
           if (state is PostLoaded) {
+            final posts = [...state.posts]
+              ..sort((a, b) => b.pushedAt.compareTo(a.pushedAt));
+
             return SafeArea(
               child: SingleChildScrollView(
                 child: Column(
@@ -91,7 +99,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         widget.user.bio ?? 'No bio available',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 20,
                         ),
                       ),
@@ -99,21 +107,29 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     Text(
                       "Posts",
                       style: GoogleFonts.montserrat(
-                        textStyle: TextStyle(
+                        textStyle: const TextStyle(
                           fontSize: 40,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    postCard(mq, widget.user),
-                    postCard(mq, widget.user),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      itemCount: posts.length,
+                      itemBuilder: (context, index) {
+                        final post = posts[index];
+
+                        return postCard(mq, post);
+                      },
+                    ),
                   ],
                 ),
               ),
             );
           }
-          return SizedBox();
+          return const SizedBox();
         },
       ),
     );

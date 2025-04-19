@@ -25,7 +25,7 @@ class PostEntity extends Equatable {
   final String visibility;
   final String defaultBranch;
 
-  PostEntity({
+  const PostEntity({
     required this.id,
     required this.nodeId,
     required this.name,
@@ -85,7 +85,7 @@ class OwnerEntity extends Equatable {
   final String avatarUrl;
   final String htmlUrl;
 
-  OwnerEntity({
+  const OwnerEntity({
     required this.login,
     required this.id,
     required this.avatarUrl,

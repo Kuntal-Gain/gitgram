@@ -1,18 +1,33 @@
+// ignore_for_file: overridden_fields
+
 import 'package:gitgram/domain/entities/user_entity.dart';
 
 class UserModel extends UserEntity {
+  @override
   final String login;
+  @override
   final int id;
+  @override
   final String avatarUrl;
+  @override
   final String? name;
+  @override
   final String? bio;
+  @override
   final String? company;
+  @override
   final String? location;
+  @override
   final String? email;
+  @override
   final String? twitterUsername;
+  @override
   final String blog;
+  @override
   final int publicRepos;
+  @override
   final int followers;
+  @override
   final int following;
 
   const UserModel({
@@ -55,10 +70,10 @@ class UserModel extends UserEntity {
         location: json['location'],
         email: json['email'],
         twitterUsername: json['twitter_username'],
-        blog: json['blog'],
-        publicRepos: json['public_repos'],
-        followers: json['followers'],
-        following: json['following'],
+        blog: json['blog'] ?? "",
+        publicRepos: json['public_repos'] ?? 0,
+        followers: json['followers'] ?? 0,
+        following: json['following'] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {

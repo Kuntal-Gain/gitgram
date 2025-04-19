@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,8 +5,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gitgram/app/cubits/user/user_cubit.dart';
 import 'package:gitgram/app/screens/splash_screen.dart';
 import 'package:gitgram/app/cubits/auth/auth_cubit.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 import 'app/cubits/post/post_cubit.dart';
 import 'dependency_injection.dart' as di;
 import 'firebase_options.dart';
@@ -47,7 +43,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark(),
-        home: SplashScreen(),
+        home: const SplashScreen(),
       ),
     );
   }

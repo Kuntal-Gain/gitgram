@@ -15,9 +15,15 @@ abstract class LocalRepository {
 
   Future<UserEntity> getCurrentUser(String token);
 
+  Future<List<UserEntity>> getFollowings(String username);
+
+  Future<UserEntity> getSingleFollowing(String username);
+
   // repos
 
   Future<List<PostEntity>> getRepositories(String username);
 
   Future<PostEntity> getSingleRepository(String username, String repoId);
+
+  Future<List<PostEntity>> getFeedPosts(String username);
 }

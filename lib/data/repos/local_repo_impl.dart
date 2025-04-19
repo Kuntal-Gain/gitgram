@@ -32,4 +32,15 @@ class LocalRepoImpl implements LocalRepository {
   @override
   Future<PostEntity> getSingleRepository(String username, String repoId) =>
       remoteDatasource.getSingleRepository(username, repoId);
+
+  @override
+  Future<List<PostEntity>> getFeedPosts(String username) =>
+      remoteDatasource.getFeedPosts(username);
+  @override
+  Future<List<UserEntity>> getFollowings(String username) =>
+      remoteDatasource.getFollowings(username);
+
+  @override
+  Future<UserEntity> getSingleFollowing(String username) =>
+      remoteDatasource.getSingleFollowing(username);
 }

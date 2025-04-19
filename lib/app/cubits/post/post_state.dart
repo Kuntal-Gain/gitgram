@@ -17,14 +17,16 @@ class PostLoading extends PostState {
 class PostLoaded extends PostState {
   final List<PostEntity> posts;
 
-  const PostLoaded({required this.posts});
+  const PostLoaded(this.posts);
   @override
   List<Object> get props => [posts];
 }
 
 class PostError extends PostState {
-  final String message;
-  const PostError({required this.message});
+  final String message; // <- maybe nullable here
+
+  const PostError(this.message);
+
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [message];
 }

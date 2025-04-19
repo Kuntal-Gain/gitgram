@@ -1,12 +1,11 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gitgram/app/cubits/user/user_cubit.dart';
-import 'package:gitgram/app/screens/AuthScreen.dart';
 import 'package:gitgram/app/screens/pages/feed_screen.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
-import 'package:gitgram/dependency_injection.dart' as di;
 import '../../utils/custom/custom_snackbar.dart';
-import '../cubits/auth/auth_cubit.dart';
 import 'pages/explore_screen.dart';
 import 'pages/search_screen.dart';
 import 'pages/user_screen.dart';
@@ -37,11 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.black,
       body: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
-          print(state);
           if (state is UserLoading) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(
-                color: const Color.fromARGB(255, 66, 255, 73),
+                color: Color.fromARGB(255, 66, 255, 73),
               ),
             );
           }
@@ -52,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
               _hasShownSuccessBar = true;
             }
             _screens = [
-              const FeedScreen(),
+              FeedScreen(user: user),
               const SearchScreen(),
               const ExploreScreen(),
               UserProfileScreen(user: user),

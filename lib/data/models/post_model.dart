@@ -1,3 +1,5 @@
+// ignore_for_file: annotate_overrides, overridden_fields
+
 import 'package:gitgram/domain/entities/post_entity.dart';
 
 class PostModel extends PostEntity {
@@ -25,7 +27,7 @@ class PostModel extends PostEntity {
   final String visibility;
   final String defaultBranch;
 
-  PostModel({
+  const PostModel({
     required this.id,
     required this.nodeId,
     required this.name,
@@ -84,12 +86,12 @@ class PostModel extends PostEntity {
       private: json['private'],
       owner: OwnerModel.fromJson(json['owner']),
       htmlUrl: json['html_url'],
-      description: json['description'],
+      description: json['description'] ?? 'No description available',
       fork: json['fork'],
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
       pushedAt: DateTime.parse(json['pushed_at']),
-      language: json['language'],
+      language: json['language'] ?? 'Unknown',
       hasIssues: json['has_issues'],
       hasProjects: json['has_projects'],
       hasDownloads: json['has_downloads'],
@@ -136,7 +138,7 @@ class OwnerModel extends OwnerEntity {
   final String avatarUrl;
   final String htmlUrl;
 
-  OwnerModel({
+  const OwnerModel({
     required this.login,
     required this.id,
     required this.avatarUrl,

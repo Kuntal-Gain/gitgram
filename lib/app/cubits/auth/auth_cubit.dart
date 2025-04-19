@@ -34,14 +34,14 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthInitial());
 
     try {
-      final res = await isSignInUseCase.call();
+      await isSignInUseCase.call();
 
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token');
       if (token != null) {
         emit(Authenticated(token));
       } else {
-        emit(Unauthenticated());
+        emit(const Unauthenticated());
       }
     } catch (e) {
       emit(AuthFailure(e.toString()));
@@ -53,7 +53,7 @@ class AuthCubit extends Cubit<AuthState> {
 
     try {
       await signOutUseCase.call();
-      emit(Unauthenticated());
+      emit(const Unauthenticated());
     } catch (e) {
       emit(AuthFailure(e.toString()));
     }

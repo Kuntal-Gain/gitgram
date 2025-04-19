@@ -4,9 +4,27 @@ import 'package:gitgram/utils/constants/color_const.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../domain/entities/user_entity.dart';
-import 'profile_widgets.dart';
 
-Widget postCard(Size size, UserEntity user) {
+String getRelativeTime(String pushedAt) {
+  DateTime date = DateTime.parse(pushedAt);
+  Duration diff = DateTime.now().difference(date);
+
+  if (diff.inDays > 7) {
+    return "${diff.inDays ~/ 7} weeks ago";
+  }
+  if (diff.inDays > 0) {
+    return "${diff.inDays} days ago";
+  }
+  if (diff.inHours > 0) {
+    return "${diff.inHours} hours ago";
+  }
+  if (diff.inMinutes > 0) {
+    return "${diff.inMinutes} minutes ago";
+  }
+  return "just now";
+}
+
+Widget postCard(Size size, PostEntity post) {
   return SingleChildScrollView(
     child: Container(
       padding: EdgeInsets.all(size.width * 0.02),
@@ -19,7 +37,7 @@ Widget postCard(Size size, UserEntity user) {
               ClipRRect(
                 borderRadius: BorderRadius.circular(100),
                 child: Image.network(
-                  user.avatarUrl,
+                  post.owner.avatarUrl,
                   width: size.width * 0.1,
                 ),
               ),
@@ -27,7 +45,7 @@ Widget postCard(Size size, UserEntity user) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '  @${user.login}',
+                    '  @${post.owner.login}',
                     style: GoogleFonts.montserrat(
                       textStyle: TextStyle(
                         fontSize: size.width * 0.035,
@@ -40,7 +58,7 @@ Widget postCard(Size size, UserEntity user) {
                     width: size.width * 0.8,
                     padding: EdgeInsets.only(left: size.width * 0.02),
                     child: Text(
-                      '${user.bio}',
+                      post.language,
                       overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.montserrat(
                         textStyle: TextStyle(
@@ -65,42 +83,51 @@ Widget postCard(Size size, UserEntity user) {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            '${user.login}/',
-                            style: GoogleFonts.montserrat(
-                              textStyle: TextStyle(
-                                fontSize: size.width * 0.07,
-                                color: AppColor.bgBlackColor,
-                                fontWeight: FontWeight.w600,
+                      child: SizedBox(
+                        width: size.width * 0.7,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${post.owner.login}/',
+                              style: GoogleFonts.montserrat(
+                                textStyle: TextStyle(
+                                  fontSize: size.width * 0.07,
+                                  color: AppColor.bgBlackColor,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
-                          ),
-                          Text(
-                            'Socialseed',
-                            style: GoogleFonts.montserrat(
-                              textStyle: TextStyle(
-                                fontSize: size.width * 0.08,
-                                color: AppColor.bgBlackColor,
-                                fontWeight: FontWeight.w900,
+                            Text(
+                              post.name,
+                              style: GoogleFonts.montserrat(
+                                textStyle: TextStyle(
+                                  fontSize: size.width * 0.08,
+                                  color: AppColor.bgBlackColor,
+                                  fontWeight: FontWeight.w900,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Image.network(
-                        user.avatarUrl,
+                        post.owner.avatarUrl,
                         width: size.width * 0.15,
                         height: size.height * 0.15,
                       ),
                     ),
                   ],
                 ),
-                postCardWidget(contribs: 1, issues: 0, stars: 0, forks: 0),
+                postCardWidget(
+                    contribs: post.watchersCount,
+                    issues: post.openIssuesCount,
+                    stars: post.stargazersCount,
+                    forks: post.forksCount),
                 SizedBox(height: size.height * 0.05),
               ],
             ),
@@ -108,7 +135,8 @@ Widget postCard(Size size, UserEntity user) {
 
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Last committed 2 days ago'),
+            child: Text(
+                'Last committed ${getRelativeTime(post.pushedAt.toString())}'),
           ),
         ],
       ),
@@ -124,7 +152,7 @@ Widget postCardWidget(
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
-      postCardTile("Contributors", contribs),
+      postCardTile("Watchers", contribs),
       postCardTile("Issues", issues),
       postCardTile("Stars", stars),
       postCardTile("Forks", forks),

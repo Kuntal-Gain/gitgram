@@ -5,6 +5,8 @@ import 'package:gitgram/app/cubits/user/user_cubit.dart';
 import 'package:gitgram/data/data_sources/remote_datasource_impl.dart';
 import 'package:gitgram/data/repos/local_repo_impl.dart';
 import 'package:gitgram/domain/repos/local_repository.dart';
+import 'package:gitgram/domain/usecases/user/get_following_usecase.dart';
+import 'package:gitgram/domain/usecases/user/get_single_following_usecase.dart';
 import 'package:gitgram/domain/usecases/user/is_signin_usecase.dart';
 import 'package:gitgram/domain/usecases/user/signin_with_github_usecase.dart';
 import 'package:github_oauth/github_oauth.dart';
@@ -12,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/cubits/post/post_cubit.dart';
 import 'data/data_sources/remote_datasource.dart';
+import 'domain/usecases/post/get_feed_posts_usecase.dart';
 import 'domain/usecases/post/get_repos_usecase.dart';
 import 'domain/usecases/post/get_single_repo_usecase.dart';
 import 'domain/usecases/user/get_curr_user_usecase.dart';
@@ -40,6 +43,7 @@ Future<void> init() async {
     () => PostCubit(
       getReposUseCase: sl.call(),
       getSingleRepoUseCase: sl.call(),
+      getFeedPostsUsecase: sl.call(),
     ),
   );
 
@@ -48,9 +52,12 @@ Future<void> init() async {
   sl.registerLazySingleton(() => IsSignInUseCase(sl.call()));
   sl.registerLazySingleton(() => SignInWithGitHubUseCase(sl.call()));
   sl.registerLazySingleton(() => SignOutUseCase(sl.call()));
+  sl.registerLazySingleton(() => GetFollowingUsecase(sl.call()));
+  sl.registerLazySingleton(() => GetSingleFollowingUsecase(sl.call()));
   sl.registerLazySingleton(() => GetCurrentUserUsecase(sl.call()));
   sl.registerLazySingleton(() => GetReposUseCase(sl.call()));
   sl.registerLazySingleton(() => GetSingleRepoUseCase(sl.call()));
+  sl.registerLazySingleton(() => GetFeedPostsUsecase(sl.call()));
 
   // repositories
 
