@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gitgram/app/cubits/user/user_cubit.dart';
 import 'package:gitgram/app/screens/splash_screen.dart';
 import 'package:gitgram/app/cubits/auth/auth_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'app/cubits/post/post_cubit.dart';
 import 'dependency_injection.dart' as di;
 import 'firebase_options.dart';

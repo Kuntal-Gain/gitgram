@@ -44,8 +44,6 @@ class _FeedScreenState extends State<FeedScreen> {
       ),
       body: BlocBuilder<PostCubit, PostState>(
         builder: (ctx, state) {
-          print(state);
-
           if (state is PostLoading) {
             return const Center(
               child: CircularProgressIndicator(
@@ -55,7 +53,8 @@ class _FeedScreenState extends State<FeedScreen> {
           }
 
           if (state is PostLoaded) {
-            final posts = state.posts;
+            final posts = [...state.posts]
+              ..sort((a, b) => b.pushedAt.compareTo(a.pushedAt));
 
             return ListView.builder(
               itemCount: posts.length,
