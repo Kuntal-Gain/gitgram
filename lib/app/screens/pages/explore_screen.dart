@@ -82,6 +82,12 @@ class _ExploreScreenState extends State<ExploreScreen> {
     print(items);
   }
 
+  String numberWithAlias(int number) {
+    if (number < 1000) return number.toString();
+    if (number < 1000000) return '${(number / 1000).toStringAsFixed(1)}k';
+    return '${(number / 1000000).toStringAsFixed(1)}M';
+  }
+
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
@@ -144,7 +150,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     children: [
                       Icon(Icons.star_border),
                       SizedBox(width: 10),
-                      Text('120k',
+                      Text(numberWithAlias(stars),
                           style: GoogleFonts.montserrat(
                             textStyle: TextStyle(
                               color: Colors.white,
