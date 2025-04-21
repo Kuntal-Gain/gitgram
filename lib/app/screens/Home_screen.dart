@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
               FeedScreen(user: user),
               const SearchScreen(),
               const ExploreScreen(),
-              UserProfileScreen(user: user),
+              UserProfileScreen(user: user, isCurrentUser: true),
             ];
 
             return _screens[currentIdx];

@@ -96,6 +96,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
       backgroundColor: AppColor.blackColor,
       appBar: AppBar(
         backgroundColor: Colors.black,
+        surfaceTintColor: Colors.black,
         automaticallyImplyLeading: false,
         title: Text(
           'Explore',

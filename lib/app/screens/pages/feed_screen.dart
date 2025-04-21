@@ -31,6 +31,7 @@ class _FeedScreenState extends State<FeedScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        surfaceTintColor: Colors.black,
         backgroundColor: Colors.black,
         automaticallyImplyLeading: false,
         title: Text(

@@ -36,6 +36,8 @@ Future<void> init() async {
   sl.registerFactory(
     () => UserCubit(
       getCurrentUserUsecase: sl.call(),
+      getFollowingUsecase: sl.call(),
+      getSingleFollowingUsecase: sl.call(),
     ),
   );
 

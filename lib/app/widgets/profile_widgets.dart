@@ -1,14 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gitgram/domain/entities/user_entity.dart';
 
-Widget profileCard(
-    {required int followers, required int following, required int repos}) {
+import '../screens/pages/following_list.dart';
+
+Widget profileCard({required UserEntity user, required BuildContext ctx}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
-      profileCardTile("Repos", repos),
-      profileCardTile("Followers", followers),
-      profileCardTile("Following", following),
+      profileCardTile("Repos", user.publicRepos),
+      profileCardTile("Followers", user.followers),
+      GestureDetector(
+        onTap: () {
+          Navigator.push(
+            ctx,
+            MaterialPageRoute(
+              builder: (context) => FollowingList(
+                user: user,
+              ),
+            ),
+          );
+        },
+        child: profileCardTile("Following", user.following),
+      ),
     ],
   );
 }

@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:gitgram/app/screens/pages/user_screen.dart';
+import 'package:gitgram/data/models/user_model.dart';
+import 'package:gitgram/domain/entities/user_entity.dart';
 import 'package:gitgram/utils/constants/color_const.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -25,6 +28,18 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
+  Future<UserEntity> getUserData({required String username}) async {
+    final url = Uri.parse('https://api.github.com/users/$username');
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      return UserModel.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('GitHub user data failed: ${response.statusCode}');
+    }
+  }
+
   bool isSearching = false;
 
   List<Map<String, dynamic>> searchResults = [];
@@ -38,6 +53,7 @@ class _SearchScreenState extends State<SearchScreen> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
+        surfaceTintColor: Colors.black,
         automaticallyImplyLeading: false,
         title: Text(
           'Search',
@@ -69,10 +85,12 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
                 Expanded(
                   child: TextField(
+                    style: TextStyle(color: Colors.black),
                     controller: _controller,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Search',
+                      fillColor: Colors.black,
                     ),
                   ),
                 ),
@@ -101,6 +119,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ],
             ),
           ),
+          SizedBox(height: 16),
           if (isSearching)
             Expanded(
               child: Center(
@@ -116,6 +135,17 @@ class _SearchScreenState extends State<SearchScreen> {
                 itemBuilder: (context, index) {
                   final result = searchResults[index];
                   return ListTile(
+                    onTap: () async {
+                      final res = await getUserData(username: result['login']);
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UserProfileScreen(
+                              user: res, isCurrentUser: false),
+                        ),
+                      );
+                    },
                     title: Text(result['login']),
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(result['avatar_url']),

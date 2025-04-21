@@ -35,7 +35,11 @@ class MyApp extends StatelessWidget {
           create: (context) => di.sl<AuthCubit>(),
         ),
         BlocProvider<UserCubit>(
-          create: (context) => di.sl<UserCubit>(),
+          create: (context) => UserCubit(
+            getCurrentUserUsecase: di.sl(),
+            getFollowingUsecase: di.sl(),
+            getSingleFollowingUsecase: di.sl(),
+          ),
         ),
         BlocProvider<PostCubit>(
           create: (context) => di.sl<PostCubit>(),

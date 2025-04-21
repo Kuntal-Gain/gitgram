@@ -27,3 +27,17 @@ class UserError extends UserState {
   @override
   List<Object> get props => [message];
 }
+
+class UserFollowingLoaded extends UserState {
+  final List<UserEntity> user;
+  const UserFollowingLoaded(this.user);
+  @override
+  List<Object> get props => [user];
+}
+
+class UserFollowerLoaded extends UserState {
+  final List<UserEntity> user;
+  const UserFollowerLoaded(this.user);
+  @override
+  List<Object> get props => [user];
+}
