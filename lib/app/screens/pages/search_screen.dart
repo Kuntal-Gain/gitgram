@@ -9,8 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
-
+  final UserEntity user;
+  const SearchScreen({super.key, required this.user});
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
@@ -142,7 +142,9 @@ class _SearchScreenState extends State<SearchScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => UserProfileScreen(
-                              user: res, isCurrentUser: false),
+                              user: res,
+                              isCurrentUser: false,
+                              curr_user: widget.user),
                         ),
                       );
                     },

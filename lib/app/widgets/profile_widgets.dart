@@ -4,7 +4,10 @@ import 'package:gitgram/domain/entities/user_entity.dart';
 
 import '../screens/pages/following_list.dart';
 
-Widget profileCard({required UserEntity user, required BuildContext ctx}) {
+Widget profileCard(
+    {required UserEntity user,
+    required UserEntity curr,
+    required BuildContext ctx}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
@@ -17,6 +20,7 @@ Widget profileCard({required UserEntity user, required BuildContext ctx}) {
             MaterialPageRoute(
               builder: (context) => FollowingList(
                 user: user,
+                currentUser: curr,
               ),
             ),
           );

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gitgram/app/screens/Home_screen.dart';
 import 'package:gitgram/app/screens/pages/user_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../domain/entities/user_entity.dart';
 import '../../cubits/user/user_cubit.dart';
 
 class FollowingList extends StatefulWidget {
   final UserEntity user;
-  const FollowingList({super.key, required this.user});
+  final UserEntity currentUser;
+  const FollowingList(
+      {super.key, required this.user, required this.currentUser});
 
   @override
   State<FollowingList> createState() => _FollowingListState();
@@ -16,11 +20,10 @@ class FollowingList extends StatefulWidget {
 class _FollowingListState extends State<FollowingList> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     BlocProvider.of<UserCubit>(context)
-        .getFollowing(username: widget.user.login);
+        .getFollowing(username: widget.currentUser.login);
   }
 
   @override
@@ -28,12 +31,22 @@ class _FollowingListState extends State<FollowingList> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Following'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () async {
+            final token =
+                (await SharedPreferences.getInstance()).getString('token');
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => HomeScreen(
+                      token: token!,
+                      defaultIdx: 3,
+                    )));
+          },
+        ),
       ),
       body: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
-          print(state);
-
-          if (state is UserLoading) {
+          if (state is UserLoading && state.isFollowingList) {
             return const Center(
               child: CircularProgressIndicator(
                 color: Color.fromARGB(255, 66, 255, 73),
@@ -41,13 +54,11 @@ class _FollowingListState extends State<FollowingList> {
             );
           }
           if (state is UserFollowingLoaded) {
-            final users = state.user;
+            final users = state.users;
             return ListView.builder(
               itemCount: users.length,
               itemBuilder: (context, index) {
                 final user = users[index];
-
-                print(user.followers);
                 return ListTile(
                   onTap: () {
                     Navigator.push(
@@ -56,6 +67,7 @@ class _FollowingListState extends State<FollowingList> {
                         builder: (context) => UserProfileScreen(
                           user: user,
                           isCurrentUser: false,
+                          curr_user: widget.currentUser,
                         ),
                       ),
                     );
@@ -66,6 +78,11 @@ class _FollowingListState extends State<FollowingList> {
                   ),
                 );
               },
+            );
+          }
+          if (state is UserError) {
+            return Center(
+              child: Text(state.message),
             );
           }
           return const SizedBox.shrink();
