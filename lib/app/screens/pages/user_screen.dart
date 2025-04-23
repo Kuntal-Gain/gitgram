@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gitgram/app/cubits/post/post_cubit.dart';
 import 'package:gitgram/app/cubits/user/user_cubit.dart';
+import 'package:gitgram/app/screens/Home_screen.dart';
 import 'package:gitgram/app/screens/pages/following_list.dart';
+import 'package:gitgram/app/screens/pages/search_screen.dart';
 import 'package:gitgram/app/widgets/post_widget.dart';
 import 'package:gitgram/domain/entities/post_entity.dart';
 import 'package:gitgram/domain/entities/user_entity.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../utils/custom/custom_snackbar.dart';
 import '../../cubits/auth/auth_cubit.dart';
@@ -18,10 +21,12 @@ class UserProfileScreen extends StatefulWidget {
   final bool isCurrentUser;
   // ignore: non_constant_identifier_names
   final UserEntity curr_user;
+  final bool isSearch;
   const UserProfileScreen(
       {super.key,
       required this.user,
       required this.isCurrentUser,
+      required this.isSearch,
       // ignore: non_constant_identifier_names
       required this.curr_user});
 
@@ -86,7 +91,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   );
 
                   if (isLogout == true) {
+                    // ignore: use_build_context_synchronously
                     BlocProvider.of<AuthCubit>(context).signOut();
+                    // ignore: use_build_context_synchronously
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (_) => const AuthScreen()),
                       (route) => false,
@@ -213,13 +220,25 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ),
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => FollowingList(
-                            user: widget.user,
-                            currentUser: widget.curr_user,
-                            isCurrentUser: widget.isCurrentUser,
-                          )));
+                onPressed: () async {
+                  if (!widget.isSearch) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => FollowingList(
+                              user: widget.user,
+                              currentUser: widget.curr_user,
+                              isCurrentUser: widget.isCurrentUser,
+                            )));
+                  } else {
+                    final token = (await SharedPreferences.getInstance())
+                        .getString("token");
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => HomeScreen(
+                                  token: token!,
+                                )));
+                  }
                 },
               ),
             )

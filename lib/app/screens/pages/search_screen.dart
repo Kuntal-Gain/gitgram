@@ -143,9 +143,11 @@ class _SearchScreenState extends State<SearchScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => UserProfileScreen(
-                              user: res,
-                              isCurrentUser: false,
-                              curr_user: widget.user),
+                            user: res,
+                            isCurrentUser: false,
+                            curr_user: widget.user,
+                            isSearch: true,
+                          ),
                         ),
                       );
                     },

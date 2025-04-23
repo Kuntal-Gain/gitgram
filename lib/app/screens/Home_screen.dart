@@ -57,7 +57,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const ExploreScreen(),
               UserProfileScreen(
-                  user: user, isCurrentUser: true, curr_user: user),
+                  user: user,
+                  isCurrentUser: true,
+                  curr_user: user,
+                  isSearch: false),
             ];
 
             return _screens[currentIdx];

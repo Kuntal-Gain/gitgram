@@ -74,6 +74,7 @@ class _FollowingListState extends State<FollowingList> {
                           user: user,
                           isCurrentUser: false,
                           curr_user: widget.currentUser,
+                          isSearch: false,
                         ),
                       ),
                     );
