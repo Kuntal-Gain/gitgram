@@ -19,7 +19,7 @@ class UserCubit extends Cubit<UserState> {
   }) : super(UserInitial());
 
   Future<void> getUser({required String token}) async {
-    emit(UserLoading(isCurrentUser: true));
+    emit(const UserLoading(isCurrentUser: true));
     try {
       final user = await getCurrentUserUsecase.call(token);
       emit(UserLoaded(user));
@@ -29,7 +29,7 @@ class UserCubit extends Cubit<UserState> {
   }
 
   Future<void> getFollowing({required String username}) async {
-    emit(UserLoading(isFollowingList: true));
+    emit(const UserLoading(isFollowingList: true));
     try {
       final users = await getFollowingUsecase.call(username);
       emit(UserFollowingLoaded(users));
@@ -39,7 +39,7 @@ class UserCubit extends Cubit<UserState> {
   }
 
   Future<void> getSingleFollowing({required String username}) async {
-    emit(UserLoading(isSingleFollowing: true));
+    emit(const UserLoading(isSingleFollowing: true));
     try {
       final user = await getSingleFollowingUsecase.call(username);
       emit(UserSingleFollowingLoaded(user));

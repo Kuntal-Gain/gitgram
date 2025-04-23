@@ -21,6 +21,7 @@ Widget profileCard(
               builder: (context) => FollowingList(
                 user: user,
                 currentUser: curr,
+                isCurrentUser: user == curr,
               ),
             ),
           );

@@ -10,8 +10,12 @@ import '../../cubits/user/user_cubit.dart';
 class FollowingList extends StatefulWidget {
   final UserEntity user;
   final UserEntity currentUser;
+  final bool isCurrentUser;
   const FollowingList(
-      {super.key, required this.user, required this.currentUser});
+      {super.key,
+      required this.user,
+      required this.currentUser,
+      required this.isCurrentUser});
 
   @override
   State<FollowingList> createState() => _FollowingListState();
@@ -22,24 +26,26 @@ class _FollowingListState extends State<FollowingList> {
   void initState() {
     super.initState();
 
-    BlocProvider.of<UserCubit>(context)
-        .getFollowing(username: widget.currentUser.login);
+    BlocProvider.of<UserCubit>(context).getFollowing(
+        username: widget.isCurrentUser
+            ? widget.currentUser.login
+            : widget.user.login);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Following'),
+        title: const Text('Following'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () async {
             final token =
                 (await SharedPreferences.getInstance()).getString('token');
+            // ignore: use_build_context_synchronously
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (_) => HomeScreen(
                       token: token!,
-                      defaultIdx: 3,
                     )));
           },
         ),

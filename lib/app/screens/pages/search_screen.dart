@@ -69,25 +69,25 @@ class _SearchScreenState extends State<SearchScreen> {
           Container(
             height: mq.height * 0.06,
             width: mq.width,
-            margin: EdgeInsets.symmetric(horizontal: 16),
+            margin: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: const Icon(
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Icon(
                     Icons.search,
                     color: Colors.grey,
                   ),
                 ),
                 Expanded(
                   child: TextField(
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                     controller: _controller,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Search',
                       fillColor: Colors.black,
@@ -119,9 +119,9 @@ class _SearchScreenState extends State<SearchScreen> {
               ],
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           if (isSearching)
-            Expanded(
+            const Expanded(
               child: Center(
                 child: CircularProgressIndicator(
                   color: Colors.green,
@@ -139,6 +139,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       final res = await getUserData(username: result['login']);
 
                       Navigator.push(
+                        // ignore: use_build_context_synchronously
                         context,
                         MaterialPageRoute(
                           builder: (context) => UserProfileScreen(

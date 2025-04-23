@@ -70,7 +70,7 @@ class _FeedScreenState extends State<FeedScreen> {
             failureBar(context, state.message);
           }
 
-          return SizedBox();
+          return const SizedBox();
         },
       ),
     );

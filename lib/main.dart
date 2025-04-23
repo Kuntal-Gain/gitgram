@@ -5,7 +5,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gitgram/app/cubits/user/user_cubit.dart';
 import 'package:gitgram/app/screens/splash_screen.dart';
 import 'package:gitgram/app/cubits/auth/auth_cubit.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'app/cubits/post/post_cubit.dart';
 import 'dependency_injection.dart' as di;
 import 'firebase_options.dart';
@@ -34,13 +33,14 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthCubit>(
           create: (context) => di.sl<AuthCubit>(),
         ),
-        BlocProvider<UserCubit>(
-          create: (context) => UserCubit(
-            getCurrentUserUsecase: di.sl(),
-            getFollowingUsecase: di.sl(),
-            getSingleFollowingUsecase: di.sl(),
-          ),
-        ),
+        // BlocProvider<UserCubit>(
+        //   create: (context) => UserCubit(
+        //     getCurrentUserUsecase: di.sl(),
+        //     getFollowingUsecase: di.sl(),
+        //     getSingleFollowingUsecase: di.sl(),
+        //   ),
+        // ),
+        BlocProvider<UserCubit>(create: (context) => di.sl<UserCubit>()),
         BlocProvider<PostCubit>(
           create: (context) => di.sl<PostCubit>(),
         ),

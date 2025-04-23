@@ -3,8 +3,6 @@ import 'package:gitgram/domain/entities/post_entity.dart';
 import 'package:gitgram/utils/constants/color_const.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../domain/entities/user_entity.dart';
-
 String getRelativeTime(String pushedAt) {
   DateTime date = DateTime.parse(pushedAt);
   Duration diff = DateTime.now().difference(date);

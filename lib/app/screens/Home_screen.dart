@@ -12,8 +12,8 @@ import 'pages/user_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final String token;
-  final int defaultIdx;
-  const HomeScreen({super.key, required this.token, this.defaultIdx = 0});
+
+  const HomeScreen({super.key, required this.token});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -26,8 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    currentIdx = widget.defaultIdx;
-
     BlocProvider.of<UserCubit>(context).getUser(token: widget.token);
 
     super.initState();

@@ -20,7 +20,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
     String? token,
   }) async {
     // Default to 7 days ago
-    final since = sinceDate ?? DateTime.now().subtract(Duration(days: 7));
+    final since = sinceDate ?? DateTime.now().subtract(const Duration(days: 7));
     final sinceIso = since.toIso8601String().split('T').first;
 
     // Build the search query
@@ -78,8 +78,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
       items = repos['items'];
     });
-
-    print(items);
   }
 
   String numberWithAlias(int number) {
@@ -108,7 +106,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
         actions: const [],
       ),
       body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 1 / 1.2,
         ),
@@ -120,7 +118,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
           final stars = item['stars'];
 
           return Container(
-            margin: EdgeInsets.all(12),
+            margin: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: AppColor.bgBlackColor,
               borderRadius: BorderRadius.circular(12),
@@ -149,8 +147,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Icon(Icons.star_border),
-                      SizedBox(width: 10),
+                      const Icon(Icons.star_border),
+                      const SizedBox(width: 10),
                       Text(numberWithAlias(stars),
                           style: GoogleFonts.montserrat(
                             textStyle: TextStyle(

@@ -9,16 +9,20 @@ import 'package:gitgram/domain/entities/user_entity.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../utils/custom/custom_snackbar.dart';
+import '../../cubits/auth/auth_cubit.dart';
 import '../../widgets/profile_widgets.dart';
+import '../AuthScreen.dart';
 
 class UserProfileScreen extends StatefulWidget {
   final UserEntity user;
   final bool isCurrentUser;
+  // ignore: non_constant_identifier_names
   final UserEntity curr_user;
   const UserProfileScreen(
       {super.key,
       required this.user,
       required this.isCurrentUser,
+      // ignore: non_constant_identifier_names
       required this.curr_user});
 
   @override
@@ -30,10 +34,77 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   void initState() {
     super.initState();
 
-    if (!widget.isCurrentUser)
+    if (!widget.isCurrentUser) {
       BlocProvider.of<UserCubit>(context)
           .getSingleFollowing(username: widget.user.login);
+    }
     BlocProvider.of<PostCubit>(context).fetchPosts(username: widget.user.login);
+  }
+
+  void _showLogoutBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.black,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.logout, color: Colors.red),
+                title:
+                    const Text("Logout", style: TextStyle(color: Colors.white)),
+                onTap: () async {
+                  Navigator.of(context).pop(); // Close bottom sheet first
+                  final isLogout = await showDialog<bool>(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        backgroundColor: Colors.black,
+                        title: const Text(
+                          'Are you sure you want to logout?',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text('NO',
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: const Text('YES',
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+
+                  if (isLogout == true) {
+                    BlocProvider.of<AuthCubit>(context).signOut();
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (_) => const AuthScreen()),
+                      (route) => false,
+                    );
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.cancel, color: Colors.grey),
+                title:
+                    const Text("Cancel", style: TextStyle(color: Colors.white)),
+                onTap: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   _bodyWidget(Size mq, UserEntity user, List<PostEntity> posts) {
@@ -53,20 +124,31 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: mq.height * 0.1,
+                  height: mq.height * 0.13,
                   width: mq.width * 0.7,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('  @${widget.user.login}',
-                          style: GoogleFonts.merienda(
-                            textStyle: TextStyle(
-                              fontSize: mq.width * 0.05,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                      Row(
+                        children: [
+                          Text('  @${widget.user.login}',
+                              style: GoogleFonts.merienda(
+                                textStyle: TextStyle(
+                                  fontSize: mq.width * 0.05,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )),
+                          const Spacer(),
+                          if (widget.isCurrentUser)
+                            IconButton(
+                              icon: const Icon(Icons.more_vert,
+                                  color: Colors.white),
+                              onPressed: () => _showLogoutBottomSheet(context),
                             ),
-                          )),
+                        ],
+                      ),
                       profileCard(
                         user: widget.isCurrentUser ? widget.user : user,
                         ctx: context,
@@ -116,8 +198,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
 
-    final curr = widget.isCurrentUser ? widget.user : null;
-
     return Scaffold(
       appBar: (!widget.isCurrentUser)
           ? AppBar(
@@ -138,6 +218,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       builder: (_) => FollowingList(
                             user: widget.user,
                             currentUser: widget.curr_user,
+                            isCurrentUser: widget.isCurrentUser,
                           )));
                 },
               ),
@@ -164,7 +245,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
                 if (state is PostError) {
                   // Handle null message case
-                  final errorMessage = state.message ?? 'Something went wrong!';
+                  final errorMessage = state.message;
                   failureBar(context, errorMessage);
 
                   return Center(
@@ -197,7 +278,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
               if (state is PostError) {
                 // Handle null message case
-                final errorMessage = state.message ?? 'Something went wrong!';
+                final errorMessage = state.message;
                 failureBar(context, errorMessage);
 
                 return Center(
