@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gitgram/data/data_sources/remote_datasource.dart';
+import 'package:gitgram/data/data_sources/remote_datasource/remote_datasource.dart';
 import 'package:gitgram/domain/repos/local_repository.dart';
 import 'package:github_oauth/github_oauth.dart';
 

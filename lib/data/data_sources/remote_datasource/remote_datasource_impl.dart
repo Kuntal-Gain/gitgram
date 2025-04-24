@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
-import 'package:gitgram/data/data_sources/remote_datasource.dart';
+import 'package:gitgram/data/data_sources/local_storage/local_storage.dart';
+import 'package:gitgram/data/data_sources/remote_datasource/remote_datasource.dart';
 import 'package:gitgram/data/models/user_model.dart';
 import 'package:gitgram/domain/entities/post_entity.dart';
 import 'package:gitgram/domain/entities/user_entity.dart';
@@ -9,17 +10,17 @@ import 'package:github_oauth/github_oauth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/post_model.dart';
+import '../../models/post_model.dart';
 
 class RemoteDatasourceImpl implements RemoteDatasource {
   final GitHubSignIn gitHubSignIn;
-  final SharedPreferences prefs;
+  final LocalStorage storage;
 
   static const _tokenKey = 'token';
 
   RemoteDatasourceImpl({
     required this.gitHubSignIn,
-    required this.prefs,
+    required this.storage,
   });
 
   @override
@@ -29,7 +30,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
 
       if (result.status == GitHubSignInResultStatus.ok &&
           result.token != null) {
-        await prefs.setString(_tokenKey, result.token!);
+        await storage.setString(_tokenKey, result.token!);
       }
 
       return result;
@@ -40,13 +41,13 @@ class RemoteDatasourceImpl implements RemoteDatasource {
 
   @override
   Future<bool> isSignedIn() async {
-    final token = prefs.getString(_tokenKey);
+    final token = storage.getString(_tokenKey);
     return token != null && token.isNotEmpty;
   }
 
   @override
   Future<void> signOut() async {
-    await prefs.remove(_tokenKey);
+    await storage.remove(_tokenKey);
   }
 
   @override
@@ -71,7 +72,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
 
   @override
   Future<List<PostEntity>> getRepositories(String username) async {
-    final token = prefs.getString(_tokenKey);
+    final token = storage.getString(_tokenKey);
     final url = Uri.parse("https://api.github.com/users/$username/repos");
 
     final res = await http.get(url, headers: {
@@ -100,7 +101,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
 
   @override
   Future<PostEntity> getSingleRepository(String username, String repoId) async {
-    final token = prefs.getString(_tokenKey);
+    final token = storage.getString(_tokenKey);
     final url = Uri.parse("https://api.github.com/repos/$username/$repoId");
 
     final res = await http.get(url, headers: {
@@ -137,7 +138,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
   @override
   Future<List<UserEntity>> getFollowings(String username) async {
     // get list of users
-    final token = prefs.getString(_tokenKey);
+    final token = storage.getString(_tokenKey);
     final url = Uri.parse("https://api.github.com/users/$username/following");
     final res = await http.get(url, headers: {
       'Authorization': 'Bearer $token',
@@ -162,7 +163,7 @@ class RemoteDatasourceImpl implements RemoteDatasource {
   @override
   Future<UserEntity> getSingleFollowing(String username) async {
     // get user data
-    final token = prefs.getString(_tokenKey);
+    final token = storage.getString(_tokenKey);
     final url = Uri.parse("https://api.github.com/users/$username");
     final res = await http.get(url, headers: {
       'Authorization': 'Bearer $token',

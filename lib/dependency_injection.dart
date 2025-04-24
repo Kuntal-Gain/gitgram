@@ -2,7 +2,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gitgram/app/cubits/auth/auth_cubit.dart';
 import 'package:gitgram/app/cubits/user/user_cubit.dart';
-import 'package:gitgram/data/data_sources/remote_datasource_impl.dart';
+import 'package:gitgram/data/data_sources/remote_datasource/remote_datasource_impl.dart';
 import 'package:gitgram/data/repos/local_repo_impl.dart';
 import 'package:gitgram/domain/repos/local_repository.dart';
 import 'package:gitgram/domain/usecases/user/get_following_usecase.dart';
@@ -13,7 +13,9 @@ import 'package:github_oauth/github_oauth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/cubits/post/post_cubit.dart';
-import 'data/data_sources/remote_datasource.dart';
+import 'data/data_sources/local_storage/local_storage.dart';
+import 'data/data_sources/local_storage/local_storage_impl.dart';
+import 'data/data_sources/remote_datasource/remote_datasource.dart';
 import 'domain/usecases/post/get_feed_posts_usecase.dart';
 import 'domain/usecases/post/get_repos_usecase.dart';
 import 'domain/usecases/post/get_single_repo_usecase.dart';
@@ -66,13 +68,14 @@ Future<void> init() async {
   sl.registerLazySingleton<LocalRepository>(
       () => LocalRepoImpl(remoteDatasource: sl.call()));
   sl.registerLazySingleton<RemoteDatasource>(
-      () => RemoteDatasourceImpl(gitHubSignIn: sl.call(), prefs: sl.call()));
-
+      () => RemoteDatasourceImpl(gitHubSignIn: sl.call(), storage: sl.call()));
+  sl.registerLazySingleton<LocalStorage>(() => sl.call());
   // externals
 
   await dotenv.load();
 
   final sharedPrefs = await SharedPreferences.getInstance();
+  final localStorage = LocalStorageImpl(sharedPrefs);
 
   sl.registerLazySingleton(() => dotenv);
   sl.registerLazySingleton(() => sharedPrefs);
